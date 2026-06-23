@@ -1,0 +1,679 @@
+/* ═══════════════════════════════════════════════════════════
+   LÂMINA — Design Tokens
+   Brand Guide v1.0 | Dark Precision (O Sistema Afiado)
+   Precisão tecnológica para barbearias
+   ═══════════════════════════════════════════════════════════ */
+
+:root {
+  /* ── 1. PALETA DE CORES (OBSIDIAN STEEL) ── */
+
+  /* Cores de Fundo Absolutas */
+  --bg-void:    #07080A;  /* Deep Steel Void (Fundo absoluto — mais escuro que o Acessor) */
+  --bg-surface: #111318;  /* Carbon Surface (Cards e painéis) */
+  --bg-elevated:#1A1D24;  /* Elevated Steel (Modais, dropdowns, elementos elevados) */
+  --bg-hover:   #252830;  /* Hover State */
+
+  /* Textos & Bordas (Hierarquia Silver) */
+  --text-pure:   #FFFFFF;  /* Apenas para títulos e destaques máximos */
+  --text-main:   #E2E4E9;  /* Silver Main (Corpo de texto principal) */
+  --text-muted:  #8B8F9A;  /* Steel Muted (Descrições, microcópias) */
+  --text-subtle: #5A5E6A;  /* Ghost (Placeholders, texto desabilitado) */
+  --border-faint:#1E2028;  /* Borda quase invisível */
+  --border-thin: #2A2D36;  /* Borda estrutural padrão */
+  --border-focus:#3D4150;  /* Borda de foco / hover */
+
+  /* Cor Primária — A Precisão (Aquamarine Steel) */
+  --accent-primary:       #00D4AA;  /* Precision Aqua — lâmina afiada, precisa, cirúrgica */
+  --accent-primary-hover: #00E8BC;
+  --accent-primary-muted: #00B894;
+  --accent-primary-bg:    rgba(0, 212, 170, 0.08);
+  --accent-primary-border:rgba(0, 212, 170, 0.25);
+  --accent-primary-glow:  rgba(0, 212, 170, 0.35);
+
+  /* Cor Secundária — O Premium (Silver Gold) */
+  --accent-gold:       #D4A853;  /* Refined Gold — o toque premium, barbershop clássico */
+  --accent-gold-hover: #E0B863;
+  --accent-gold-bg:    rgba(212, 168, 83, 0.08);
+  --accent-gold-border:rgba(212, 168, 83, 0.25);
+  --accent-gold-glow:  rgba(212, 168, 83, 0.30);
+
+  /* Cor de Alerta — A Urgência */
+  --accent-danger:       #FF4757;  /* Razor Red */
+  --accent-danger-bg:    rgba(255, 71, 87, 0.10);
+  --accent-danger-border:rgba(255, 71, 87, 0.30);
+
+  /* Cores Semânticas */
+  --color-success: #00D4AA;
+  --color-warning: #FFB347;
+  --color-danger:  #FF4757;
+  --color-info:    #5B9FFF;
+
+  /* ── 2. TIPOGRAFIA ── */
+  --font-display: 'Space Grotesk', system-ui, sans-serif;  /* Títulos — geométrica, afiada */
+  --font-body:    'Inter', system-ui, sans-serif;           /* Corpo — legível, profissional */
+  --font-mono:    'JetBrains Mono', 'Fira Code', monospace; /* Dados, kickers, tags */
+
+  /* ── 3. ESPAÇAMENTOS (Sistema de 4px) ── */
+  --space-1:  4px;
+  --space-2:  8px;
+  --space-3:  12px;
+  --space-4:  16px;
+  --space-5:  20px;
+  --space-6:  24px;
+  --space-8:  32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-20: 80px;
+  --space-24: 96px;
+
+  /* ── 4. BORDER RADIUS ── */
+  --radius-xs:   4px;
+  --radius-sm:   6px;
+  --radius-md:   10px;
+  --radius-lg:   16px;
+  --radius-xl:   24px;
+  --radius-2xl:  32px;
+  --radius-full: 9999px;
+
+  /* ── 5. SOMBRAS ── */
+  --shadow-sm:    0 1px 3px rgba(0, 0, 0, 0.4);
+  --shadow-md:    0 4px 16px rgba(0, 0, 0, 0.5);
+  --shadow-lg:    0 12px 40px rgba(0, 0, 0, 0.6);
+  --shadow-xl:    0 24px 64px rgba(0, 0, 0, 0.7);
+  --shadow-glow-primary: 0 4px 24px var(--accent-primary-glow);
+  --shadow-glow-gold:    0 4px 24px var(--accent-gold-glow);
+  --shadow-inset: inset 0 1px 1px rgba(255, 255, 255, 0.04);
+
+  /* ── 6. TRANSIÇÕES ── */
+  --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-bounce: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  --duration-fast: 150ms;
+  --duration-normal: 250ms;
+  --duration-slow: 400ms;
+
+  /* ── 7. GLASSMORPHISM ── */
+  --glass-bg:     rgba(17, 19, 24, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.06);
+  --glass-blur:   16px;
+
+  /* ── 8. SÍMBOLOS DO DESIGN SYSTEM ── */
+  --symbol-blade:  '⟋';   /* A lâmina */
+  --symbol-node:   '◆';   /* Ponto de conexão */
+  --symbol-flow:   '→';   /* Fluxo, progressão */
+  --symbol-slash:  '//';  /* Divisor lógico */
+  --symbol-dot:    '·';   /* Separador */
+}
+
+
+/* ═══════════════════════════════════════════════════════════
+   GLOBALS
+   ═══════════════════════════════════════════════════════════ */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg-void);
+  color: var(--text-main);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-void); }
+::-webkit-scrollbar-thumb { background: var(--border-focus); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--accent-primary); }
+
+/* Selection */
+::selection {
+  background: var(--accent-primary-bg);
+  color: var(--accent-primary);
+}
+
+
+/* ═══════════════════════════════════════════════════════════
+   TYPOGRAPHY UTILITIES
+   ═══════════════════════════════════════════════════════════ */
+
+.font-display { font-family: var(--font-display); }
+.font-body    { font-family: var(--font-body); }
+.font-mono    { font-family: var(--font-mono); }
+
+/* Headings */
+.lamina-h1 {
+  font-family: var(--font-display);
+  font-size: 4rem;
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.04em;
+  color: var(--text-pure);
+}
+
+.lamina-h2 {
+  font-family: var(--font-display);
+  font-size: 2.75rem;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  color: var(--text-pure);
+}
+
+.lamina-h3 {
+  font-family: var(--font-display);
+  font-size: 1.75rem;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: var(--text-pure);
+}
+
+.lamina-h4 {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--text-pure);
+}
+
+.lamina-body {
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.7;
+  color: var(--text-main);
+}
+
+.lamina-caption {
+  font-size: 0.8rem;
+  font-weight: 400;
+  color: var(--text-muted);
+}
+
+.lamina-mono {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--accent-primary);
+}
+
+/* Text Colors */
+.text-pure    { color: var(--text-pure); }
+.text-main    { color: var(--text-main); }
+.text-muted   { color: var(--text-muted); }
+.text-subtle  { color: var(--text-subtle); }
+.text-primary { color: var(--accent-primary); }
+.text-gold    { color: var(--accent-gold); }
+.text-danger  { color: var(--accent-danger); }
+
+/* Gradient Text */
+.lamina-gradient-text {
+  background: linear-gradient(135deg, var(--accent-primary), var(--accent-gold));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.lamina-gradient-text-reverse {
+  background: linear-gradient(135deg, var(--accent-gold), var(--accent-primary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+
+/* ═══════════════════════════════════════════════════════════
+   KICKER (Section Label — Estilo Mono Técnico)
+   ═══════════════════════════════════════════════════════════ */
+
+.lamina-kicker {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--accent-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: var(--space-4);
+}
+
+.lamina-kicker::before {
+  content: '⟋';
+  color: var(--accent-gold);
+  font-weight: bold;
+  font-size: 1em;
+}
+
+
+/* ═══════════════════════════════════════════════════════════
+   BUTTONS
+   ═══════════════════════════════════════════════════════════ */
+
+.lamina-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 600;
+  line-height: 1;
+  border-radius: var(--radius-md);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all var(--duration-normal) var(--ease-smooth);
+  text-decoration: none;
+  white-space: nowrap;
+  user-select: none;
+  position: relative;
+  overflow: hidden;
+}
+
+.lamina-btn:focus-visible {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 2px;
+}
+
+.lamina-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* Primary — Precision Aqua */
+.lamina-btn-primary {
+  background: linear-gradient(135deg, var(--accent-primary), var(--accent-primary-muted));
+  color: var(--bg-void);
+  font-weight: 700;
+  box-shadow: var(--shadow-glow-primary);
+}
+
+.lamina-btn-primary:hover:not(:disabled) {
+  background: linear-gradient(135deg, var(--accent-primary-hover), var(--accent-primary));
+  box-shadow: 0 6px 32px var(--accent-primary-glow);
+  transform: translateY(-2px);
+}
+
+.lamina-btn-primary:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+/* Gold — Premium Action */
+.lamina-btn-gold {
+  background: linear-gradient(135deg, var(--accent-gold), #C49B45);
+  color: var(--bg-void);
+  font-weight: 700;
+  box-shadow: var(--shadow-glow-gold);
+}
+
+.lamina-btn-gold:hover:not(:disabled) {
+  background: linear-gradient(135deg, var(--accent-gold-hover), var(--accent-gold));
+  box-shadow: 0 6px 32px var(--accent-gold-glow);
+  transform: translateY(-2px);
+}
+
+/* Secondary — Outline Aqua */
+.lamina-btn-secondary {
+  background: transparent;
+  color: var(--accent-primary);
+  border-color: var(--accent-primary-border);
+}
+
+.lamina-btn-secondary:hover:not(:disabled) {
+  background: var(--accent-primary-bg);
+  border-color: var(--accent-primary);
+}
+
+/* Ghost */
+.lamina-btn-ghost {
+  background: transparent;
+  color: var(--text-main);
+  border-color: var(--border-thin);
+}
+
+.lamina-btn-ghost:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: var(--border-focus);
+  color: var(--text-pure);
+}
+
+/* Sizes */
+.lamina-btn-sm {
+  padding: 0.5rem 1rem;
+  font-size: 0.8rem;
+  border-radius: var(--radius-sm);
+}
+
+.lamina-btn-lg {
+  padding: 1rem 2rem;
+  font-size: 1rem;
+  border-radius: var(--radius-lg);
+}
+
+
+/* ═══════════════════════════════════════════════════════════
+   CARDS
+   ═══════════════════════════════════════════════════════════ */
+
+.lamina-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-thin);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  transition: all var(--duration-normal) var(--ease-smooth);
+  position: relative;
+  overflow: hidden;
+}
+
+.lamina-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.06), transparent);
+}
+
+.lamina-card:hover {
+  border-color: var(--border-focus);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-3px);
+}
+
+.lamina-card-glass {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
+}
+
+.lamina-card-primary:hover {
+  border-color: var(--accent-primary-border);
+  box-shadow: 0 8px 32px rgba(0, 212, 170, 0.08);
+}
+
+.lamina-card-gold:hover {
+  border-color: var(--accent-gold-border);
+  box-shadow: 0 8px 32px rgba(212, 168, 83, 0.08);
+}
+
+
+/* ═══════════════════════════════════════════════════════════
+   BADGES / TAGS
+   ═══════════════════════════════════════════════════════════ */
+
+.lamina-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.25rem 0.65rem;
+  border-radius: var(--radius-full);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  border: 1px solid transparent;
+}
+
+.lamina-badge-primary {
+  background: var(--accent-primary-bg);
+  color: var(--accent-primary);
+  border-color: var(--accent-primary-border);
+}
+
+.lamina-badge-gold {
+  background: var(--accent-gold-bg);
+  color: var(--accent-gold);
+  border-color: var(--accent-gold-border);
+}
+
+.lamina-badge-danger {
+  background: var(--accent-danger-bg);
+  color: var(--accent-danger);
+  border-color: var(--accent-danger-border);
+}
+
+.lamina-badge-neutral {
+  background: rgba(139, 143, 154, 0.08);
+  color: var(--text-muted);
+  border-color: rgba(139, 143, 154, 0.2);
+}
+
+
+/* ═══════════════════════════════════════════════════════════
+   INPUTS
+   ═══════════════════════════════════════════════════════════ */
+
+.lamina-input {
+  width: 100%;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-thin);
+  border-radius: var(--radius-md);
+  padding: 0.75rem 1rem;
+  color: var(--text-pure);
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color var(--duration-fast) var(--ease-smooth),
+              box-shadow var(--duration-fast) var(--ease-smooth);
+}
+
+.lamina-input:focus {
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 3px var(--accent-primary-bg);
+}
+
+.lamina-input::placeholder {
+  color: var(--text-subtle);
+}
+
+.lamina-input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.lamina-input-error {
+  border-color: var(--accent-danger) !important;
+  box-shadow: 0 0 0 3px var(--accent-danger-bg) !important;
+}
+
+
+/* ═══════════════════════════════════════════════════════════
+   MANIFESTO BOX (Hero Showcase)
+   ═══════════════════════════════════════════════════════════ */
+
+.lamina-manifesto {
+  background: linear-gradient(145deg, var(--bg-surface), var(--bg-void));
+  border: 1px solid var(--border-thin);
+  padding: var(--space-12);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-inset), var(--shadow-xl);
+  position: relative;
+  overflow: hidden;
+}
+
+.lamina-manifesto::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -20%;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, var(--accent-primary-bg), transparent 70%);
+  pointer-events: none;
+}
+
+.lamina-manifesto::after {
+  content: '';
+  position: absolute;
+  bottom: -30%;
+  left: -10%;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, var(--accent-gold-bg), transparent 70%);
+  pointer-events: none;
+}
+
+.lamina-manifesto-quote {
+  font-family: var(--font-display);
+  font-size: 2.5rem;
+  line-height: 1.15;
+  color: var(--text-pure);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  position: relative;
+  z-index: 1;
+}
+
+.lamina-manifesto-quote span {
+  background: linear-gradient(135deg, var(--accent-primary), var(--accent-gold));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+
+/* ═══════════════════════════════════════════════════════════
+   SECTION STRUCTURE
+   ═══════════════════════════════════════════════════════════ */
+
+.lamina-section {
+  padding: var(--space-24) 0;
+  position: relative;
+}
+
+.lamina-section-alt {
+  background-color: var(--bg-surface);
+  border-top: 1px solid var(--border-thin);
+  border-bottom: 1px solid var(--border-thin);
+}
+
+.lamina-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--space-8);
+}
+
+
+/* ═══════════════════════════════════════════════════════════
+   NAVBAR
+   ═══════════════════════════════════════════════════════════ */
+
+.lamina-navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 72px;
+  background: rgba(7, 8, 10, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border-faint);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--space-8);
+}
+
+/* Brand Mark */
+.lamina-brand {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  color: var(--text-pure);
+  text-decoration: none;
+  display: flex;
+  align-items: baseline;
+}
+
+.lamina-brand .blade {
+  color: var(--accent-primary);
+  margin-left: 1px;
+  text-shadow: 0 0 12px var(--accent-primary-glow);
+  font-weight: 400;
+}
+
+
+/* ═══════════════════════════════════════════════════════════
+   ANIMATIONS
+   ═══════════════════════════════════════════════════════════ */
+
+@keyframes lamina-fadeUp {
+  from { transform: translateY(24px); opacity: 0; }
+  to   { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes lamina-fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes lamina-popIn {
+  from { transform: translateY(16px) scale(0.96); opacity: 0; }
+  to   { transform: translateY(0) scale(1); opacity: 1; }
+}
+
+@keyframes lamina-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+@keyframes lamina-shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* Utility Animation Classes */
+.animate-fade-up {
+  animation: lamina-fadeUp var(--duration-slow) var(--ease-smooth) forwards;
+  opacity: 0;
+}
+
+.animate-pop-in {
+  animation: lamina-popIn var(--duration-slow) var(--ease-bounce) forwards;
+  opacity: 0;
+}
+
+.animate-pulse {
+  animation: lamina-pulse 2s ease-in-out infinite;
+}
+
+
+/* ═══════════════════════════════════════════════════════════
+   RESPONSIVE BREAKPOINTS (Mobile First)
+   ═══════════════════════════════════════════════════════════ */
+
+@media (max-width: 1024px) {
+  .lamina-h1 { font-size: 3rem; }
+  .lamina-h2 { font-size: 2.25rem; }
+  .lamina-container { padding: 0 var(--space-6); }
+  .lamina-navbar { padding: 0 var(--space-6); }
+}
+
+@media (max-width: 768px) {
+  .lamina-h1 { font-size: 2.5rem; }
+  .lamina-h2 { font-size: 1.875rem; }
+  .lamina-h3 { font-size: 1.5rem; }
+  .lamina-section { padding: var(--space-16) 0; }
+  .lamina-container { padding: 0 var(--space-4); }
+  .lamina-navbar { padding: 0 var(--space-4); height: 64px; }
+  .lamina-manifesto { padding: var(--space-8); }
+  .lamina-manifesto-quote { font-size: 1.75rem; }
+}
+
+@media (max-width: 480px) {
+  .lamina-h1 { font-size: 2rem; }
+  .lamina-h2 { font-size: 1.5rem; }
+  .lamina-btn { padding: 0.65rem 1.25rem; font-size: 0.85rem; }
+}
