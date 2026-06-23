@@ -119,6 +119,14 @@
     .badge-showcase { display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; margin-bottom: 1.5rem; }
     
     .card-showcase-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; }
+    .strategy-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; margin-top: 1.5rem; }
+    .strategy-card { background: var(--bg-surface); border: 1px solid var(--border-thin); border-radius: var(--radius-lg); padding: 1.25rem; }
+    .strategy-card strong { color: var(--text-pure); }
+    .strategy-card h4 { margin: 0 0 0.75rem; font-size: 1rem; }
+    .strategy-metric { font-family: var(--font-mono); font-size: 0.72rem; color: var(--accent-primary); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.5rem; display: block; }
+    .strategy-roadmap { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0.75rem; margin-top: 1.25rem; }
+    .strategy-step { border-left: 2px solid var(--accent-primary-border); background: rgba(255,255,255,0.02); padding: 1rem; border-radius: var(--radius-md); }
+    .strategy-step span { display: block; font-family: var(--font-mono); color: var(--accent-gold); font-size: 0.7rem; margin-bottom: 0.45rem; text-transform: uppercase; letter-spacing: 0.08em; }
     .input-showcase { display: flex; flex-direction: column; gap: 0.75rem; max-width: 320px; }
     .input-label { font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-subtle); text-transform: uppercase; letter-spacing: 0.1em; }
     .symbols-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
@@ -228,6 +236,8 @@
       .lamina-manifesto-quote { font-size: 1.45rem; line-height: 1.1; }
       .lamina-card { padding: 1rem; }
       .card-showcase-grid { grid-template-columns: 1fr !important; }
+      .strategy-grid,
+      .strategy-roadmap { grid-template-columns: 1fr !important; }
       .symbols-grid { grid-template-columns: 1fr !important; }
       .typo-row { grid-template-columns: 1fr !important; gap: 0.35rem; padding-bottom: 1rem; }
       .typo-label { font-size: 0.72rem; line-height: 1.45; }
@@ -295,32 +305,33 @@
     </div>
 
     <nav class="ds-nav">
-      <!-- Categoria: O Negócio -->
-      <div class="nav-label" style="margin-top: 1rem;">Escopo Master & Negócios</div>
-      <a href="#manifesto" class="nav-link active">1. O Manifesto LÂMINA</a>
-      <a href="#origem" class="nav-link">2. Visão Executiva e Origem</a>
-      <a href="#storytelling" class="nav-link">3. Storytelling & Timeline</a>
+      <!-- Categoria: O Negocio -->
+      <div class="nav-label" style="margin-top: 1rem;">Escopo Master &amp; Negocios</div>
+      <a href="#manifesto" class="nav-link active">1. O Manifesto LAMINA</a>
+      <a href="#origem" class="nav-link">2. Visao Executiva e Origem</a>
+      <a href="#storytelling" class="nav-link">3. Storytelling &amp; Timeline</a>
       <a href="#ecossistema" class="nav-link">4. O Ecossistema (4 Pilares)</a>
-      <a href="#webadmin" class="nav-link">5. Web Admin & Permissões</a>
-      <a href="#laminapay" class="nav-link">6. LÂMINA Pay: Motor Fintech</a>
-      <a href="#devops" class="nav-link">7. Fábrica de Apps (CI/CD)</a>
-      <a href="#ia" class="nav-link">8. LÂMINA IA (Cockpit & RAG)</a>
-      <a href="#gamificacao" class="nav-link">9. Matemática da Gamificação</a>
-      <a href="#mercado" class="nav-link">10. Mercado & Concorrência</a>
-      <a href="#pricing" class="nav-link">11. Modelo de Negócio & Setup</a>
+      <a href="#webadmin" class="nav-link">5. Web Admin &amp; Permissoes</a>
+      <a href="#laminapay" class="nav-link">6. LAMINA Pay: Motor Fintech</a>
+      <a href="#devops" class="nav-link">7. Fabrica de Apps (CI/CD)</a>
+      <a href="#ia" class="nav-link">8. LAMINA IA (Cockpit &amp; RAG)</a>
+      <a href="#gamificacao" class="nav-link">9. Matematica da Gamificacao</a>
+      <a href="#mercado" class="nav-link">10. Mercado &amp; Concorrencia</a>
+      <a href="#pricing" class="nav-link">11. Modelo de Negocio &amp; Setup</a>
+      <a href="#estrategia" class="nav-link">12. Revisao Estrategica</a>
 
       <div class="nav-divider"></div>
 
       <!-- Categoria: Design System -->
       <div class="nav-label">Design System Visual</div>
-      <a href="#cores" class="nav-link">12. Paleta Obsidian Steel</a>
-      <a href="#tipografia" class="nav-link">13. Tipografia Afiada</a>
-      <a href="#botoes" class="nav-link">14. Botões e Ações</a>
-      <a href="#cards" class="nav-link">15. Cards e Superfícies</a>
-      <a href="#badges" class="nav-link">16. Badges & Tags</a>
-      <a href="#inputs" class="nav-link">17. Inputs de Dados</a>
-      <a href="#simbolos" class="nav-link">18. Identidade Simbólica & Voz</a>
-      <a href="#chat" class="nav-link">19. Chat UI (Mockup IA)</a>
+      <a href="#cores" class="nav-link">13. Paleta Obsidian Steel</a>
+      <a href="#tipografia" class="nav-link">14. Tipografia Afiada</a>
+      <a href="#botoes" class="nav-link">15. Botoes e Acoes</a>
+      <a href="#cards" class="nav-link">16. Cards e Superficies</a>
+      <a href="#badges" class="nav-link">17. Badges &amp; Tags</a>
+      <a href="#inputs" class="nav-link">18. Inputs de Dados</a>
+      <a href="#simbolos" class="nav-link">19. Identidade Simbolica &amp; Voz</a>
+      <a href="#chat" class="nav-link">20. Chat UI (Mockup IA)</a>
     </nav>
   </aside>
 
@@ -646,13 +657,64 @@
       </div>
     </section>
 
+
+    <!-- 12. Revisao Estrategica -->
+    <section id="estrategia" class="ds-section">
+      <div class="section-header">
+        <div class="section-kicker">12 // Revis&atilde;o Estrat&eacute;gica</div>
+        <h2 class="section-title">Plano de melhoria e execu&ccedil;&atilde;o</h2>
+        <p class="section-desc">Minha leitura do projeto: a tese est&aacute; forte, mas precisa deixar mais evidente o caminho de valida&ccedil;&atilde;o, o que entra no MVP, quais riscos precisam ser controlados e quais m&eacute;tricas provam que a L&Acirc;MINA est&aacute; pronta para escalar.</p>
+      </div>
+
+      <div class="strategy-grid">
+        <div class="strategy-card">
+          <span class="strategy-metric">Diagn&oacute;stico</span>
+          <h4 class="lamina-h4">O site vende bem a vis&atilde;o, mas pode vender melhor a ordem de execu&ccedil;&atilde;o.</h4>
+          <p class="lamina-text text-muted" style="margin:0;">Hoje a narrativa mostra ambi&ccedil;&atilde;o, tecnologia e marca. A melhoria &eacute; transformar isso em leitura de investidor e operador: prioridade, prova, risco e pr&oacute;xima entrega.</p>
+        </div>
+        <div class="strategy-card">
+          <span class="strategy-metric">Foco comercial</span>
+          <h4 class="lamina-h4">O produto inicial deve ser vendido como transforma&ccedil;&atilde;o operacional, n&atilde;o como lista de features.</h4>
+          <p class="lamina-text text-muted" style="margin:0;">A oferta mais forte &eacute;: app com marca pr&oacute;pria + agenda central + recorr&ecirc;ncia + pagamentos. IA entra como expans&atilde;o premium quando o cliente j&aacute; percebe valor no fluxo base.</p>
+        </div>
+        <div class="strategy-card">
+          <span class="strategy-metric">MVP recomendado</span>
+          <h4 class="lamina-h4">Come&ccedil;ar pelo ciclo agenda, cliente, pagamento e painel.</h4>
+          <p class="lamina-text text-muted" style="margin:0;">MVP enxuto: multi-tenant, cadastro da barbearia, agenda, app cliente, painel do dono, cobran&ccedil;a recorrente e relat&oacute;rio simples. Gamifica&ccedil;&atilde;o e IA entram depois de medir ades&atilde;o.</p>
+        </div>
+        <div class="strategy-card">
+          <span class="strategy-metric">Risco principal</span>
+          <h4 class="lamina-h4">Complexidade antes de valida&ccedil;&atilde;o pode atrasar receita.</h4>
+          <p class="lamina-text text-muted" style="margin:0;">O maior cuidado &eacute; n&atilde;o tentar entregar fintech, app, RAG, gamifica&ccedil;&atilde;o e whitelabel completo no mesmo primeiro pacote. A vers&atilde;o 1 precisa provar venda e reten&ccedil;&atilde;o.</p>
+        </div>
+      </div>
+
+      <h3 class="lamina-h4" style="margin-top: 2rem;">Roadmap recomendado</h3>
+      <div class="strategy-roadmap">
+        <div class="strategy-step"><span>0-30 dias</span><strong>Valida&ccedil;&atilde;o de oferta</strong><p class="lamina-text text-muted" style="margin:0.5rem 0 0; font-size:0.85rem;">Landing comercial, demo clic&aacute;vel, pitch de setup e 10 conversas com barbearias ICP.</p></div>
+        <div class="strategy-step"><span>31-60 dias</span><strong>MVP operacional</strong><p class="lamina-text text-muted" style="margin:0.5rem 0 0; font-size:0.85rem;">Agenda, cliente, painel, tenant_id, permiss&otilde;es, pagamentos b&aacute;sicos e primeira barbearia piloto.</p></div>
+        <div class="strategy-step"><span>61-90 dias</span><strong>Reten&ccedil;&atilde;o e receita</strong><p class="lamina-text text-muted" style="margin:0.5rem 0 0; font-size:0.85rem;">Clube recorrente, relat&oacute;rios, comiss&otilde;es, no-show e acompanhamento semanal de uso.</p></div>
+        <div class="strategy-step"><span>90+ dias</span><strong>Escala premium</strong><p class="lamina-text text-muted" style="margin:0.5rem 0 0; font-size:0.85rem;">Split Asaas, IA WhatsApp, RAG, whitelabel automatizado e playbook de venda B2B.</p></div>
+      </div>
+
+      <div class="lamina-card lamina-card-primary" style="margin-top: 1.5rem;">
+        <h4 class="lamina-h4" style="margin-top:0;">M&eacute;tricas que devem guiar a pr&oacute;xima vers&atilde;o</h4>
+        <ul class="lamina-list" style="margin-bottom:0;">
+          <li><strong>Ativa&ccedil;&atilde;o:</strong> primeira barbearia com agenda publicada, profissionais cadastrados e clientes ativos.</li>
+          <li><strong>Uso:</strong> agendamentos via app por semana, taxa de retorno e redu&ccedil;&atilde;o de mensagens manuais no WhatsApp.</li>
+          <li><strong>Receita:</strong> MRR por barbearia, setup recebido, take rate potencial e ades&atilde;o ao clube recorrente.</li>
+          <li><strong>Expans&atilde;o:</strong> n&uacute;mero de filiais, profissionais ativos e upgrades para Pay/IA.</li>
+        </ul>
+      </div>
+    </section>
+
     <!-- Separador Design System -->
     <div style="height: 1px; background: linear-gradient(90deg, transparent, var(--accent-gold), transparent); margin: 6rem 0 4rem; opacity: 0.5;"></div>
 
-    <!-- 12. Design System: Cores -->
+    <!-- 13. Design System: Cores -->
     <section id="cores" class="ds-section" style="border:none; padding-top: 0;">
       <div class="section-header">
-        <div class="section-kicker">12 // Design System Visual</div>
+        <div class="section-kicker">13 // Design System Visual</div>
         <h2 class="section-title">Paleta Obsidian Steel</h2>
         <p class="section-desc">Uma paleta que transmite precisão e sofisticação. O Aquamarine comunica tecnologia cirúrgica. O Gold traz o toque premium do universo barbershop clássico. Juntos, criam uma identidade inconfundível para o painel web.</p>
       </div>
@@ -703,10 +765,10 @@
       </div>
     </section>
 
-    <!-- 13. Design System: Tipografia -->
+    <!-- 14. Design System: Tipografia -->
     <section id="tipografia" class="ds-section">
       <div class="section-header">
-        <div class="section-kicker">13 // Tipografia</div>
+        <div class="section-kicker">14 // Tipografia</div>
         <h2 class="section-title">A Voz Afiada</h2>
       </div>
 
@@ -726,10 +788,10 @@
       </div>
     </section>
 
-    <!-- 14. Botões -->
+    <!-- 15. Botoes -->
     <section id="botoes" class="ds-section">
       <div class="section-header">
-        <div class="section-kicker">14 // Interações Básicas</div>
+        <div class="section-kicker">15 // Interacoes Basicas</div>
         <h2 class="section-title">Botões e Ações</h2>
       </div>
       <div class="component-board">
@@ -748,10 +810,10 @@
       </div>
     </section>
 
-    <!-- 15. Cards -->
+    <!-- 16. Cards -->
     <section id="cards" class="ds-section">
       <div class="section-header">
-        <div class="section-kicker">15 // Superfícies</div>
+        <div class="section-kicker">16 // Superficies</div>
         <h2 class="section-title">Cards e Containments</h2>
       </div>
       <div class="card-showcase-grid">
@@ -768,10 +830,10 @@
       </div>
     </section>
 
-    <!-- 16. Badges & Tags -->
+    <!-- 17. Badges & Tags -->
     <section id="badges" class="ds-section">
       <div class="section-header">
-        <div class="section-kicker">16 // Classificações</div>
+        <div class="section-kicker">17 // Classificacoes</div>
         <h2 class="section-title">Badges & Tags</h2>
       </div>
       <div class="component-board">
@@ -784,10 +846,10 @@
       </div>
     </section>
 
-    <!-- 17. Inputs -->
+    <!-- 18. Inputs -->
     <section id="inputs" class="ds-section">
       <div class="section-header">
-        <div class="section-kicker">17 // Formulários</div>
+        <div class="section-kicker">18 // Formularios</div>
         <h2 class="section-title">Inputs de Dados</h2>
       </div>
       <div class="component-board">
@@ -804,10 +866,10 @@
       </div>
     </section>
 
-    <!-- 18. Símbolos -->
+    <!-- 19. Simbolos -->
     <section id="simbolos" class="ds-section">
       <div class="section-header">
-        <div class="section-kicker">18 // Semântica Visual</div>
+        <div class="section-kicker">19 // Semantica Visual</div>
         <h2 class="section-title">Identidade Simbólica e Tom de Voz</h2>
       </div>
       <div class="component-board" style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: center;">
@@ -825,10 +887,10 @@
       </div>
     </section>
 
-    <!-- 19. Chat UI -->
+    <!-- 20. Chat UI -->
     <section id="chat" class="ds-section" style="margin-bottom: 0;">
       <div class="section-header">
-        <div class="section-kicker">19 // Experiência LLM</div>
+        <div class="section-kicker">20 // Experiencia LLM</div>
         <h2 class="section-title">Mockup Chat UI (LÂMINA IA)</h2>
       </div>
       <div class="component-board">
@@ -893,4 +955,3 @@
 
 </body>
 </html>
-
