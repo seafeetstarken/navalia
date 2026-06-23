@@ -147,6 +147,10 @@
 
     @media (max-width: 1024px) {
       .ds-sidebar {
+        top: 72px;
+        bottom: 0;
+        width: min(320px, calc(100vw - 72px));
+        padding: 1.25rem 1rem 2rem;
         transform: translateX(-100%);
         transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         z-index: 100;
@@ -156,6 +160,7 @@
         transform: translateX(0);
         box-shadow: 4px 0 24px rgba(0,0,0,0.5);
       }
+      .ds-sidebar .sidebar-brand { display: none; }
       
       .ds-main { margin-left: 0; padding: 5rem 2rem 3rem; }
       .mobile-header {
@@ -212,6 +217,7 @@
       body { overflow-x: hidden; }
       .ds-main { padding: 4.75rem 1rem 3rem; }
       .mobile-header { height: 68px; padding: 0 0.9rem; }
+      .ds-sidebar { top: 68px; width: min(320px, calc(100vw - 68px)); }
       .mobile-header-logo { font-size: 1.15rem; }
       .section-header { margin-bottom: 1.25rem; }
       .section-kicker { font-size: 0.68rem; letter-spacing: 0.14em; }
@@ -256,6 +262,7 @@
     @media (max-width: 480px) {
       .ds-main { padding-inline: 0.85rem; }
       .mobile-header { height: 64px; padding: 0 0.85rem; }
+      .ds-sidebar { top: 64px; width: min(320px, calc(100vw - 64px)); }
       .mobile-menu-btn { top: 0.85rem; right: 0.85rem; width: 42px; height: 42px; }
       .section-title { font-size: 1.35rem; }
       .section-desc { font-size: 0.94rem; }
@@ -848,7 +855,7 @@
     function toggleMenu() {
       sidebar.classList.toggle('open');
       overlay.classList.toggle('open');
-      menuBtn.innerHTML = sidebar.classList.contains('open') ? '✕' : '☰';
+      menuBtn.innerHTML = sidebar.classList.contains('open') ? '&times;' : '&#9776;';
     }
 
     if (menuBtn && overlay) {
@@ -886,7 +893,4 @@
 
 </body>
 </html>
-
-
-
 
