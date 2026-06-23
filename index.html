@@ -1,13 +1,734 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>lamina</title>
-  </head>
-  <body>
-    <div id="app"></div>
-    <script type="module" src="/src/main.js"></script>
-  </body>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Central da LÂMINA — Escopo Master & Design System</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+  <!-- Core Tokens -->
+  <link rel="stylesheet" href="./tokens/lamina-tokens.css">
+
+  <style>
+    /* ── Layout da Documentação Densificada ── */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg-void); }
+    ::-webkit-scrollbar-thumb { background: var(--border-focus); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--accent-primary); }
+
+    .ds-sidebar {
+      position: fixed;
+      top: 0; left: 0; bottom: 0;
+      width: 320px;
+      background: var(--bg-surface);
+      border-right: 1px solid var(--border-faint);
+      padding: 2rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      z-index: 10;
+      overflow-y: auto;
+    }
+
+    .ds-main {
+      margin-left: 320px;
+      padding: 2rem 4rem 6rem;
+      max-width: 1100px;
+    }
+
+    /* ── Sidebar Brand ── */
+    .sidebar-brand { display: flex; flex-direction: column; gap: 0.25rem; margin-bottom: 0.5rem; }
+    .sidebar-logo {
+      font-family: var(--font-display); font-size: 1.8rem; font-weight: 700;
+      letter-spacing: -0.04em; color: var(--text-pure); display: flex; align-items: baseline;
+    }
+    .sidebar-logo .blade-mark {
+      color: var(--accent-primary); margin-left: 2px; text-shadow: 0 0 14px var(--accent-primary-glow); font-weight: 400;
+    }
+    .sidebar-version {
+      font-family: var(--font-mono); font-size: 0.65rem; color: var(--text-subtle);
+      text-transform: uppercase; letter-spacing: 0.12em; display: flex; align-items: center; gap: 0.5rem;
+    }
+    .sidebar-version::before {
+      content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--accent-primary);
+      box-shadow: 0 0 8px var(--accent-primary-glow);
+    }
+
+    /* ── Navigation ── */
+    .ds-nav { display: flex; flex-direction: column; gap: 0.25rem; }
+    .ds-nav a {
+      text-decoration: none; color: var(--text-muted); font-size: 0.85rem; font-weight: 500;
+      padding: 0.4rem 0.6rem; border-radius: var(--radius-sm); transition: all var(--duration-fast) var(--ease-smooth);
+      display: flex; align-items: center; gap: 0.5rem; line-height: 1.3;
+    }
+    .ds-nav a:hover { color: var(--text-main); background: rgba(255, 255, 255, 0.03); }
+    .ds-nav a.active { color: var(--accent-primary); background: var(--accent-primary-bg); }
+    .ds-nav a::before { content: '◇'; font-size: 0.5rem; opacity: 0.4; font-family: var(--font-mono); }
+    .ds-nav a.active::before { content: '◆'; opacity: 1; text-shadow: 0 0 8px var(--accent-primary-glow); }
+
+    .nav-divider { height: 1px; background: var(--border-thin); margin: 1rem 0 0.5rem; }
+    .nav-label {
+      font-family: var(--font-mono); font-size: 0.65rem; color: var(--accent-gold);
+      text-transform: uppercase; letter-spacing: 0.15em; padding: 0 0.6rem; margin-bottom: 0.5rem;
+    }
+
+    /* ── Section Blocks (Densa) ── */
+    .ds-section {
+      margin-bottom: 4rem;
+      padding-top: 1.5rem;
+      border-top: 1px dashed var(--border-thin);
+    }
+    .ds-section:first-child { border-top: none; padding-top: 0; }
+    .section-header { margin-bottom: 2rem; }
+    .section-kicker {
+      font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent-primary);
+      text-transform: uppercase; letter-spacing: 0.18em; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;
+    }
+    .section-kicker::before { content: '⟋'; color: var(--accent-gold); font-weight: bold; }
+    .section-title { font-family: var(--font-display); font-size: 2.2rem; font-weight: 700; letter-spacing: -0.03em; color: var(--text-pure); margin: 0; line-height: 1.2;}
+    .section-desc { font-size: 1.05rem; color: var(--text-muted); max-width: 800px; margin-top: 0.75rem; line-height: 1.6; }
+
+    /* ── Tipografia Interna (Conteúdo Pesado) ── */
+    p.lamina-text { font-size: 0.95rem; line-height: 1.6; color: var(--text-main); margin-bottom: 1rem; }
+    ul.lamina-list { margin-top: 0.5rem; margin-bottom: 1rem; padding-left: 1.2rem; color: var(--text-main); font-size: 0.95rem; }
+    ul.lamina-list li { margin-bottom: 0.4rem; }
+    ul.lamina-list li strong { color: var(--text-pure); }
+
+    /* ── Components do Design System ── */
+    .color-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; }
+    .color-card { border: 1px solid var(--border-thin); border-radius: var(--radius-lg); overflow: hidden; background: var(--bg-surface); }
+    .color-swatch { height: 90px; width: 100%; border-bottom: 1px solid var(--border-faint); position: relative; }
+    .color-swatch-label { position: absolute; bottom: 8px; right: 10px; font-family: var(--font-mono); font-size: 0.65rem; color: rgba(255,255,255,0.5); background: rgba(0,0,0,0.4); padding: 0.15rem 0.4rem; border-radius: 3px; }
+    .color-info { padding: 1rem; }
+    .color-name { font-weight: 600; margin-bottom: 0.2rem; color: var(--text-pure); font-size: 0.9rem; }
+    .color-hex { font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted); }
+    .color-role { font-size: 0.8rem; color: var(--text-muted); margin-top: 0.5rem; line-height: 1.4; border-top: 1px dashed var(--border-faint); padding-top: 0.5rem; }
+
+    .typo-spec { display: flex; flex-direction: column; gap: 1.5rem; }
+    .typo-row { display: grid; grid-template-columns: 180px 1fr; gap: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border-faint); align-items: start; }
+    .typo-label { font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-muted); line-height: 1.6; }
+    .typo-label strong { color: var(--text-main); display: block; margin-bottom: 0.25rem; }
+
+    .component-board { background: var(--bg-surface); border: 1px solid var(--border-thin); border-radius: var(--radius-xl); padding: 2rem; position: relative; overflow: hidden; }
+    .component-board::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent); }
+    .btn-showcase { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; margin-bottom: 1.5rem; }
+    .badge-showcase { display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; margin-bottom: 1.5rem; }
+    
+    .card-showcase-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; }
+    .input-showcase { display: flex; flex-direction: column; gap: 0.75rem; max-width: 320px; }
+    .input-label { font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-subtle); text-transform: uppercase; letter-spacing: 0.1em; }
+    .symbols-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+    .symbol-card { background: var(--bg-void); border: 1px solid var(--border-thin); height: 90px; display: flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-size: 1.8rem; color: var(--accent-gold); border-radius: var(--radius-md); position: relative; }
+    .symbol-card span { font-size: 0.6rem; color: var(--text-subtle); position: absolute; bottom: 8px; text-transform: uppercase; letter-spacing: 0.08em; }
+
+    .chat-demo { background: var(--bg-void); border: 1px solid var(--border-thin); border-radius: var(--radius-lg); padding: 1.5rem; display: flex; flex-direction: column; gap: 1rem; max-width: 420px; }
+    .chat-bubble { padding: 0.85rem 1.1rem; border-radius: var(--radius-md); font-size: 0.85rem; line-height: 1.45; max-width: 85%; }
+    .chat-client { background: var(--bg-elevated); border: 1px solid var(--border-thin); border-bottom-left-radius: var(--radius-xs); color: var(--text-main); }
+    .chat-ai { background: linear-gradient(135deg, var(--accent-primary), var(--accent-primary-muted)); color: var(--bg-void); font-weight: 500; align-self: flex-end; border-bottom-right-radius: var(--radius-xs); box-shadow: 0 4px 16px var(--accent-primary-glow); }
+
+    /* ── Tabelas e Timelines Densas ── */
+    .lamina-table-dense { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.85rem; }
+    .lamina-table-dense th, .lamina-table-dense td { padding: 0.75rem 1rem; text-align: left; border-bottom: 1px solid var(--border-thin); }
+    .lamina-table-dense th { background: var(--bg-surface); color: var(--accent-primary); font-family: var(--font-mono); font-weight: 600; text-transform: uppercase; font-size: 0.7rem; letter-spacing: 0.05em; }
+    .lamina-table-dense tr:last-child td { border-bottom: none; }
+    
+    .timeline-dense { border-left: 2px solid var(--border-thin); padding-left: 1.5rem; margin: 1rem 0; }
+    .timeline-item-dense { position: relative; margin-bottom: 1.5rem; }
+    .timeline-item-dense::before { content: ''; position: absolute; left: -1.8rem; top: 0.3rem; width: 10px; height: 10px; background: var(--accent-primary); border-radius: 50%; box-shadow: 0 0 6px var(--accent-primary-glow); }
+    .timeline-year-dense { font-family: var(--font-mono); color: var(--accent-primary); font-weight: 700; margin-bottom: 0.25rem; display: block; font-size: 0.8rem; }
+
+    /* ── Responsive ── */
+    @media (max-width: 1024px) {
+      .ds-sidebar { display: none; }
+      .ds-main { margin-left: 0; padding: 2rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <aside class="ds-sidebar">
+    <div class="sidebar-brand">
+      <div class="sidebar-logo">lâmina<span class="blade-mark">⟋</span></div>
+      <div class="sidebar-version">Central Info & Design System v2.0</div>
+    </div>
+
+    <nav class="ds-nav">
+      <!-- Categoria: O Negócio -->
+      <div class="nav-label" style="margin-top: 1rem;">Escopo Master & Negócios</div>
+      <a href="#manifesto" class="nav-link active">1. O Manifesto LÂMINA</a>
+      <a href="#origem" class="nav-link">2. Visão Executiva e Origem</a>
+      <a href="#storytelling" class="nav-link">3. Storytelling & Timeline</a>
+      <a href="#ecossistema" class="nav-link">4. O Ecossistema (4 Pilares)</a>
+      <a href="#webadmin" class="nav-link">5. Web Admin & Permissões</a>
+      <a href="#laminapay" class="nav-link">6. LÂMINA Pay: Motor Fintech</a>
+      <a href="#devops" class="nav-link">7. Fábrica de Apps (CI/CD)</a>
+      <a href="#ia" class="nav-link">8. LÂMINA IA (Cockpit & RAG)</a>
+      <a href="#gamificacao" class="nav-link">9. Matemática da Gamificação</a>
+      <a href="#mercado" class="nav-link">10. Mercado & Concorrência</a>
+      <a href="#pricing" class="nav-link">11. Modelo de Negócio & Setup</a>
+
+      <div class="nav-divider"></div>
+
+      <!-- Categoria: Design System -->
+      <div class="nav-label">Design System Visual</div>
+      <a href="#cores" class="nav-link">12. Paleta Obsidian Steel</a>
+      <a href="#tipografia" class="nav-link">13. Tipografia Afiada</a>
+      <a href="#botoes" class="nav-link">14. Botões e Ações</a>
+      <a href="#cards" class="nav-link">15. Cards e Superfícies</a>
+      <a href="#badges" class="nav-link">16. Badges & Tags</a>
+      <a href="#inputs" class="nav-link">17. Inputs de Dados</a>
+      <a href="#simbolos" class="nav-link">18. Identidade Simbólica & Voz</a>
+      <a href="#chat" class="nav-link">19. Chat UI (Mockup IA)</a>
+    </nav>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="ds-main">
+
+    <!-- 1. Manifesto -->
+    <section id="manifesto" class="ds-section" style="border: none;">
+      <div class="section-header">
+        <div class="section-kicker">01 // Posicionamento da Marca</div>
+        <h1 class="section-title">Precisão tecnológica para barbearias.</h1>
+        <p class="section-desc">A LÂMINA é a plataforma de tecnologia dedicada que transforma barbearias comuns em operações digitais de elite. App com sua marca, gestão inteligente e IA — tudo afiado.</p>
+      </div>
+      <div class="lamina-manifesto" style="padding: var(--space-8); margin-bottom: 2rem;">
+        <div class="lamina-manifesto-quote">"Sua barbearia merece<br><span>tecnologia afiada.</span>"</div>
+        <p class="lamina-text" style="margin-top: 1.5rem; max-width: 800px; position: relative; z-index: 1;">
+          Barbearias gastam fortunas em decoração premium, produtos importados e marketing — mas continuam gerenciando agendamentos pelo WhatsApp e caderninho. A LÂMINA entrega o que falta: um app próprio com sua marca, painel administrativo profissional e inteligência artificial que agenda, atende e fideliza seus clientes.
+        </p>
+        <p style="margin-top: 1rem; color: var(--accent-gold); font-weight: 600; font-family: var(--font-display); position: relative; z-index: 1;">
+          Não somos software genérico. Somos a infraestrutura digital dedicada da sua barbearia.
+        </p>
+      </div>
+    </section>
+
+    <!-- 2. Origem -->
+    <section id="origem" class="ds-section">
+      <div class="section-header">
+        <div class="section-kicker">02 // Estratégico Completo</div>
+        <h2 class="section-title">A Origem e Validação Laboratorial</h2>
+      </div>
+      <p class="lamina-text">A <strong>LÂMINA</strong> não nasce de suposições corporativas de programadores em uma sala fechada. Ela é a evolução direta da <strong>Alces Barbearia</strong> (Blumenau/SC), um laboratório operacional fundado em 2019 que testou, errou e refinou todos os processos de gestão, atração e recorrência no mundo real.</p>
+      <p class="lamina-text">Não somos apenas mais uma empresa de software de tecnologia genérica; somos uma plataforma feita <strong>por barbeiros, para barbeiros</strong>. Elevamos a barbearia comum a um ecossistema digital premium. Não somos um marketplace que mistura concorrência; entregamos <strong>Tecnologia Dedicada</strong> ("Seu próprio App, sua própria Marca").</p>
+      
+      <h3 class="lamina-h4" style="margin-top: 2rem; margin-bottom: 1rem;">Os Founders (A Diretoria)</h3>
+      <div class="card-showcase-grid">
+        <div class="lamina-card">
+          <div class="lamina-badge lamina-badge-gold" style="margin-bottom: 0.75rem;">Founder & Business Ops</div>
+          <h4 class="lamina-h4" style="font-size: 1.1rem;">Gabriel Nascimento</h4>
+          <p class="lamina-text text-muted" style="margin-top: 0.5rem; font-size: 0.85rem;">Empreendedor do setor de beleza masculina, fundador da rede Alces Barbearia. Traz a inteligência operacional de negócios, validação prática no ecossistema de salões e a visão de produto focada na jornada do cliente final (+7 anos de mercado).</p>
+        </div>
+        <div class="lamina-card">
+          <div class="lamina-badge lamina-badge-primary" style="margin-bottom: 0.75rem;">Tech Founder & CTO</div>
+          <h4 class="lamina-h4" style="font-size: 1.1rem;">Leonardo Pickler</h4>
+          <p class="lamina-text text-muted" style="margin-top: 0.5rem; font-size: 0.85rem;">Engenheiro de Software Sênior/Staff com mais de 16 anos de experiência (.NET/C#, Next.js, Flutter). Especialista em IA (Agentes LLM) e Web3. Ex-CTO & Co-Founder da Nortech App. Traz maturidade arquitetural e velocidade extrema de entrega.</p>
+        </div>
+        <div class="lamina-card">
+          <div class="lamina-badge lamina-badge-neutral" style="margin-bottom: 0.75rem;">Growth & Product Lead</div>
+          <h4 class="lamina-h4" style="font-size: 1.1rem;">Juan Minni</h4>
+          <p class="lamina-text text-muted" style="margin-top: 0.5rem; font-size: 0.85rem;">CEO da Starken Tecnologia. +12 anos de marketing digital, performance e UX. Atendeu mais de 100 empresas e gerou R$ 3M+ para negócios locais. O motor que vende e empacota a tecnologia como transformação B2B.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. Storytelling & Timeline -->
+    <section id="storytelling" class="ds-section">
+      <div class="section-header">
+        <div class="section-kicker">03 // Evolução Operacional</div>
+        <h2 class="section-title">Storytelling & Linha do Tempo (2019 — 2026)</h2>
+      </div>
+      <p class="lamina-text">A história da Alces valida a tese da LÂMINA: <strong>tecnologia dedicada gera fidelidade extrema</strong>.</p>
+      
+      <div class="timeline-dense">
+        <div class="timeline-item-dense">
+          <span class="timeline-year-dense">Outubro 2019 (Fundação)</span>
+          <p class="lamina-text" style="margin:0;">O "Fusca vermelho" em Blumenau/SC. Marca forte, descontraída e focada no cliente. Onde aprendemos as dores diárias do atendimento e da cadeira vazia.</p>
+        </div>
+        <div class="timeline-item-dense">
+          <span class="timeline-year-dense">Julho 2020 (Pandemia)</span>
+          <p class="lamina-text" style="margin:0;"><strong>Primeiro App Próprio:</strong> Lançado nos primeiros 9 meses. Provou que ter um app próprio (iOS/Android) engajava mais os clientes do que marketplaces genéricos que misturam a concorrência.</p>
+        </div>
+        <div class="timeline-item-dense">
+          <span class="timeline-year-dense">Agosto 2022 (Expansão)</span>
+          <p class="lamina-text" style="margin:0;"><strong>Multi-filial Nativo:</strong> Lançamento da Unidade 2 e validação de rotas de agendamento entre filiais (Itoupava Seca e Escola Agrícola).</p>
+        </div>
+        <div class="timeline-item-dense">
+          <span class="timeline-year-dense">Setembro 2023 (A Virada da Recorrência)</span>
+          <p class="lamina-text" style="margin:0;"><strong>Alces Club:</strong> Lançamento do modelo de receita recorrente. Clientes pagando mensalidade via cartão/PIX. Garantiu estabilidade financeira absurda, faturamento previsível e maior frequência de visitas à barbearia.</p>
+        </div>
+        <div class="timeline-item-dense">
+          <span class="timeline-year-dense">2026 (Nascimento do SaaS)</span>
+          <p class="lamina-text" style="margin:0;"><strong>Abstração para LÂMINA:</strong> Transformação da estrutura tecnológica monocliente da Alces em um produto SaaS Multi-tenant global (LÂMINA).</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. Ecossistema -->
+    <section id="ecossistema" class="ds-section">
+      <div class="section-header">
+        <div class="section-kicker">04 // A Arquitetura do Produto</div>
+        <h2 class="section-title">O Ecossistema Completo (Os 4 Pilares)</h2>
+      </div>
+      <p class="lamina-text">A plataforma será composta por 4 grandes pilares interconectados, cobrindo 100% da operação de uma barbearia moderna. A estrutura está sendo modularizada de Monolito para Multi-tenant via Supabase (adicionando a coluna `tenant_id` a todas as tabelas).</p>
+
+      <div class="card-showcase-grid" style="grid-template-columns: 1fr 1fr; margin-top: 1.5rem;">
+        <div class="lamina-card lamina-card-primary">
+          <div class="lamina-badge lamina-badge-primary" style="margin-bottom: 0.5rem;">Pilar 1: B2C</div>
+          <h4 class="lamina-h4">App Nativo do Cliente (White-label)</h4>
+          <ul class="lamina-list">
+            <li><strong>Agendamento Inteligente:</strong> Multi-filial, escolha de profissional com verificação de conflitos em tempo real.</li>
+            <li><strong>Assinaturas e Gateway:</strong> Cobranças automáticas no PIX/Cartão integradas via Asaas nativamente.</li>
+            <li><strong>Gamificação Avançada:</strong> Níveis de EXP (Bronze, Prata, Ouro, VIP), Economia de Moedas (Cashback virtual) e Leaderboards.</li>
+          </ul>
+        </div>
+        <div class="lamina-card">
+          <div class="lamina-badge lamina-badge-neutral" style="margin-bottom: 0.5rem;">Pilar 2: B2E</div>
+          <h4 class="lamina-h4">Área In-App do Barbeiro</h4>
+          <ul class="lamina-list">
+            <li><strong>Agenda Pessoal:</strong> Visão clara de próximos cortes. Resolve a vida sem precisar de um computador.</li>
+            <li><strong>Encaixes Diretos:</strong> Capacidade do barbeiro agendar encaixes diretamente para seus clientes fidelizados.</li>
+            <li><strong>Acompanhamento:</strong> Gráficos de metas e comissões do dia/mês atualizadas em tempo real.</li>
+          </ul>
+        </div>
+        <div class="lamina-card">
+          <div class="lamina-badge lamina-badge-neutral" style="margin-bottom: 0.5rem;">Pilar 3: B2B Core</div>
+          <h4 class="lamina-h4">O Web Admin (Gestão Central)</h4>
+          <ul class="lamina-list">
+            <li><strong>Dashboard & Relatórios:</strong> Faturamento, taxa de retorno, ticket médio.</li>
+            <li><strong>Caixa (PDV):</strong> Abertura/fechamento e registro de vendas/serviços.</li>
+            <li><strong>Financeiro & Comissões:</strong> Cálculo automático das comissões.</li>
+            <li><strong>CRM & Estoque:</strong> Histórico de cortes, taxas de cancelamento e alertas de produtos.</li>
+          </ul>
+        </div>
+        <div class="lamina-card lamina-card-gold">
+          <div class="lamina-badge lamina-badge-gold" style="margin-bottom: 0.5rem;">Pilar 4: Premium Upsell</div>
+          <h4 class="lamina-h4">LÂMINA IA</h4>
+          <ul class="lamina-list">
+            <li><strong>Atendente WhatsApp:</strong> Agenda diretamente no sistema conversando de forma natural.</li>
+            <li><strong>Assessor Digital Preditivo:</strong> Disparo autônomo (ex: reengajar cliente sumido há 30 dias).</li>
+            <li><strong>Base RAG:</strong> Respostas a FAQs e precificações da barbearia treinada em base vetorial.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Permissões RLS -->
+    <section id="webadmin" class="ds-section">
+      <div class="section-header">
+        <div class="section-kicker">05 // Segurança e Multi-tenancy</div>
+        <h2 class="section-title">Web Admin & Matriz de Permissões RLS</h2>
+      </div>
+      <p class="lamina-text">O painel de gestão central é protegido por <strong>Row Level Security (RLS)</strong> no PostgreSQL (Supabase) utilizando a coluna `tenant_id` para isolar rigorosamente os dados das barbearias. Segurança nível SOC 2.</p>
+      
+      <div style="overflow-x: auto;">
+        <table class="lamina-table-dense">
+          <thead>
+            <tr>
+              <th>Perfil (Role)</th>
+              <th>Nível de Acesso e Escopo no Sistema</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong class="text-primary">🔧 Super Admin (LÂMINA)</strong></td>
+              <td>Administrador global da plataforma LÂMINA. Visão de todas as barbearias, gestão de faturamento das taxas (LÂMINA Pay), alteração de identidade visual global e domínios whitelabel dinâmicos.</td>
+            </tr>
+            <tr>
+              <td><strong class="text-gold">👑 Owner (Dono da Barbearia)</strong></td>
+              <td>Acesso financeiro total da *sua* rede de barbearias. Gestão do Asaas split, liberação de folha, comissionamento de equipe, despesas, configurações estruturais da loja.</td>
+            </tr>
+            <tr>
+              <td><strong class="text-pure">📊 Manager (Gerente)</strong></td>
+              <td>Operador do dia a dia. Acesso a relatórios operacionais, abertura de PDV, caixa diário, resolução de Handoff da IA, cadastro de clientes. Sem acesso a lucro geral ou split.</td>
+            </tr>
+            <tr>
+              <td><strong class="text-pure">⭐ Leader (Líder da Tropa)</strong></td>
+              <td>Barbeiro sênior/líder de filial. Gerencia a escala local, acompanha metas da equipe e comissões locais, além de operar o caixa operacional.</td>
+            </tr>
+            <tr>
+              <td><strong class="text-pure">✂️ Barber (Profissional)</strong></td>
+              <td>A visão mais restrita. O barbeiro acessa via app sua própria agenda, métricas de comissão diária do LÂMINA Pay, e encaixes para *seus* clientes.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 6. Fintech Motor -->
+    <section id="laminapay" class="ds-section">
+      <div class="section-header">
+        <div class="section-kicker">06 // O Caminho Bilionário</div>
+        <h2 class="section-title">LÂMINA Pay: O Motor Fintech</h2>
+      </div>
+      <p class="lamina-text">Um SaaS puro limita a receita à mensalidade. A LÂMINA rompe essa bolha posicionando-se como <strong>Sub-Adquirente (Fintech)</strong> via API White Label do Banco Asaas. Nós monetizamos a operação transacional das barbearias sem nenhum esforço burocrático para elas.</p>
+
+      <div class="lamina-manifesto" style="padding: 1.5rem; margin: 1.5rem 0; background: var(--bg-elevated); box-shadow: none; border-radius: var(--radius-md);">
+        <p class="lamina-text" style="font-family: var(--font-display); font-size: 1.25rem; color: var(--text-pure); margin: 0; font-weight: 500;">
+          "Onboarding Frictionless. O dono da barbearia digita apenas o CNPJ. A LÂMINA Pay cria a conta bancária dele em background via integração Sub-contas Asaas e já começamos a processar pagamentos. Zero configuração técnica com chaves de API."
+        </p>
+      </div>
+
+      <div class="card-showcase-grid" style="grid-template-columns: 1fr 1fr;">
+        <div class="lamina-card lamina-card-primary">
+          <h4 class="lamina-h4">Receita Infinita Exponencial (Take Rate)</h4>
+          <p class="lamina-text text-muted" style="margin-top: 0.5rem;">Se negociarmos PIX a R$ 0,99 de custo de infraestrutura Asaas, a LÂMINA Pay cobra R$ 1,99 da barbearia. Retemos <strong>R$ 1,00 de lucro limpo por cada corte agendado</strong> via App. Escalabilidade absurda além da assinatura mensal de software.</p>
+        </div>
+        <div class="lamina-card lamina-card-gold">
+          <h4 class="lamina-h4">Split Automático de Pagamentos</h4>
+          <p class="lamina-text text-muted" style="margin-top: 0.5rem;">Cliente paga R$ 100 via LÂMINA Pay. Nossa API injeta a regra de negócio financeira: R$ 50 vai direto automático para a conta bancária do barbeiro que atendeu, R$ 50 para o dono da barbearia. Fim do fechamento de caixa manual.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. CI/CD -->
+    <section id="devops" class="ds-section">
+      <div class="section-header">
+        <div class="section-kicker">07 // Engenharia Automática</div>
+        <h2 class="section-title">Fábrica de Apps (CI/CD Whitelabel)</h2>
+      </div>
+      <p class="lamina-text">Como a LÂMINA vai entregar 1.000 aplicativos nativos nas lojas Apple Store e Google Play sem contratar 50 programadores para fazer os builds de forma manual?</p>
+      
+      <div class="lamina-card" style="margin-top: 1rem; border-color: var(--accent-primary-border);">
+        <h4 class="lamina-h4 text-primary">Pipeline Fastlane + GitHub Actions</h4>
+        <ul class="lamina-list" style="margin-top: 1rem;">
+          <li>1. <strong>Parametrização Web:</strong> O dono da barbearia faz upload do seu logo no Web Admin e escolhe sua paleta de cores (consumindo um JSON dinâmico baseado no Design System).</li>
+          <li>2. <strong>Trigger Webhook:</strong> Um webhook dispara uma rotina autônoma em um servidor Cloud (ex: Mac M1 via GitHub Actions).</li>
+          <li>3. <strong>Injeção Multi-tenant:</strong> O script injeta o `tenant_id` diretamente no código-fonte base em Flutter.</li>
+          <li>4. <strong>Compilação e Assinatura:</strong> O servidor compila o app, assina os certificados digitais criptográficos (Apple/Google).</li>
+          <li>5. <strong>Deploy:</strong> Envia direto para aprovação de Review (TestFlight / Google Play Console) nas lojas de aplicativo. 100% autônomo, zero intervenção humana na geração do executável.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 8. LÂMINA IA -->
+    <section id="ia" class="ds-section">
+      <div class="section-header">
+        <div class="section-kicker">08 // O Módulo Premium</div>
+        <h2 class="section-title">Cérebro LÂMINA IA e Cockpit</h2>
+      </div>
+      <p class="lamina-text">Não usamos "árvore de decisão" engessada. Usamos LLMs avançados conectados a um <strong>RAG (Retrieval-Augmented Generation)</strong> em tempo real com o banco de dados da barbearia (pgvector).</p>
+      
+      <div class="card-showcase-grid">
+        <div class="lamina-card lamina-card-gold">
+          <div class="lamina-badge lamina-badge-gold" style="margin-bottom: 0.5rem;">Base RAG (Vector DB)</div>
+          <h4 class="lamina-h4">Conhecimento Profundo</h4>
+          <p class="lamina-text text-muted" style="margin-top: 0.5rem;">A IA é treinada com os preços, horários de pico e serviços de *cada* barbearia. A base assimila regras operacionais cadastradas no Cockpit Administrativo. Ela sabe, por exemplo, se o barbeiro "Lucas" costuma atrasar e agenda com folga, respeitando a tolerância configurada.</p>
+        </div>
+        <div class="lamina-card lamina-card-primary">
+          <div class="lamina-badge lamina-badge-primary" style="margin-bottom: 0.5rem;">Anti-Alucinação</div>
+          <h4 class="lamina-h4">Handoff Silencioso</h4>
+          <p class="lamina-text text-muted" style="margin-top: 0.5rem;">A IA atua via Inbox/WhatsApp. Se ela não atingir um 'Score IA' de 95% de intenção clara, ela pausa o agente autônomo e aciona um Handoff: envia notificação ao Web Admin avisando "O Humano precisa assumir". O cliente não percebe a transição.</p>
+        </div>
+      </div>
+      <p class="lamina-text" style="margin-top: 1rem;">O <strong>Console IA (Cockpit)</strong>, modelado em Vanilla JS com o Obsidian Steel theme, trará um "Inbox Simulator", Métricas Preditivas (Assessor IA detectando ociosidades e sugerindo disparos automáticos) e controles granulares de "Ajuste de Tom/Persona".</p>
+    </section>
+
+    <!-- 9. Gamificação -->
+    <section id="gamificacao" class="ds-section">
+      <div class="section-header">
+        <div class="section-kicker">09 // Retenção e Economia</div>
+        <h2 class="section-title">A Matemática da Gamificação</h2>
+      </div>
+      <p class="lamina-text">Sistemas de recompensas falhos geram prejuízo na margem de lucro. A LÂMINA abstraiu o "Caminho do Alce" para um motor genérico e rigoroso, controlando a inflação das recompensas para garantir que a barbearia lucre com a retenção a longo prazo.</p>
+      <ul class="lamina-list">
+        <li><strong>Burn Mechanism (Expiração):</strong> XP (Pontos de Nível) e Coins (Moeda Virtual) vencem a cada 90 dias sem retorno à barbearia, forçando um ciclo de recorrência acelerado para evitar perda de saldo.</li>
+        <li><strong>Lock-in de Custo:</strong> Atingir o nível Ouro, por exemplo, exige o consumo equivalente a 20 cortes no app (gerando LTV alto), e só então libera um brinde com custo fixo e margem líquida muito baixa para a barbearia (ex: Pomada que custa R$ 15).</li>
+      </ul>
+    </section>
+
+    <!-- 10. Mercado & Concorrentes -->
+    <section id="mercado" class="ds-section">
+      <div class="section-header">
+        <div class="section-kicker">10 // Pesquisa Competitiva</div>
+        <h2 class="section-title">Mercado Global e Concorrentes</h2>
+      </div>
+      <div style="overflow-x: auto; margin-bottom: 1.5rem;">
+        <table class="lamina-table-dense">
+          <thead>
+            <tr>
+              <th>Plataforma Concorrente</th>
+              <th>Ponto Forte</th>
+              <th>Preço Médio</th>
+              <th>App Próprio?</th>
+              <th>IA Nativas?</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>BestBarbers</strong></td><td>Ecossistema, clube de assinaturas</td><td>R$ 149-249/mês</td><td>✅ Sim</td><td>❌ Não</td></tr>
+            <tr><td><strong>BarberCode</strong></td><td>Chatbot WhatsApp, automação 24h</td><td>R$ 99-179/mês</td><td>❌ Não</td><td>⚠️ Básico (Regras)</td></tr>
+            <tr><td><strong>Trinks</strong> / <strong>Booksy</strong></td><td>Marketplace grande / Internacional</td><td>R$ 79-200/mês</td><td>⚠️ Genérico</td><td>❌ Não</td></tr>
+            <tr><td><strong>Anolla</strong></td><td>IA na otimização de agenda</td><td>R$ 99-149/mês</td><td>❌ Não</td><td>✅ Sim</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <h3 class="lamina-h4">Gaps de Mercado e Nossas Oportunidades</h3>
+      <ul class="lamina-list">
+        <li><strong>App nativo REAL com a marca:</strong> Maioria entrega apps genéricos ("powered by").</li>
+        <li><strong>IA Generativa:</strong> Chatbots concorrentes são de fluxo fixo. O nosso usa LLMs com RAG.</li>
+        <li><strong>Assessor digital B2B:</strong> Nenhum concorrente foca em insights proativos (detecção de no-shows).</li>
+        <li><strong>Solução Ponta-a-Ponta:</strong> Branding + App + Admin + Motor Fintech (Split) em um único pacote SaaS Enterprise.</li>
+      </ul>
+    </section>
+
+    <!-- 11. GTM & Pricing -->
+    <section id="pricing" class="ds-section">
+      <div class="section-header">
+        <div class="section-kicker">11 // Go-To-Market & Financeiro</div>
+        <h2 class="section-title">Precificação B2B SaaS</h2>
+      </div>
+      <p class="lamina-text">Venderemos uma <strong>Transformação Digital</strong> completa. Foco implacável no Ideal Customer Profile (ICP): Barbearias Tier 1 e Tier 2 (+3 cadeiras e faturamento > R$ 50k). Negócios pequenos não suportariam o nosso setup alto e qualidade da tecnologia.</p>
+      
+      <div style="display: flex; flex-direction: column; gap: 1rem; margin-top: 1.5rem;">
+        <div class="lamina-card" style="padding: 1rem 1.5rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+            <h4 class="lamina-h4 text-primary" style="font-size: 1.1rem;">Essencial</h4>
+            <span class="lamina-mono text-primary" style="font-size: 0.8rem;">R$ 197 / mês + Setup R$ 2.500</span>
+          </div>
+          <p class="lamina-text text-muted" style="margin: 0; font-size: 0.85rem;">Web Admin Central + App Cliente Publicado nas Lojas Apple/Google + Gamificação Base.</p>
+        </div>
+        <div class="lamina-card" style="padding: 1rem 1.5rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+            <h4 class="lamina-h4 text-gold" style="font-size: 1.1rem;">Pro (O Foco da Venda)</h4>
+            <span class="lamina-mono text-gold" style="font-size: 0.8rem;">R$ 347 / mês + Setup R$ 4.000</span>
+          </div>
+          <p class="lamina-text text-muted" style="margin: 0; font-size: 0.85rem;">Essencial + LÂMINA Pay Automático (Split Asaas) + Clube de Assinatura Recorrente + Metas Financeiras e Analytics Avançado.</p>
+        </div>
+        <div class="lamina-card lamina-card-glass" style="padding: 1rem 1.5rem; border-color: var(--accent-primary);">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+            <h4 class="lamina-h4 text-pure" style="font-size: 1.1rem;">Plus (Módulo IA)</h4>
+            <span class="lamina-mono text-pure" style="font-size: 0.8rem;">R$ 597+ / mês + Tokens + Setup R$ 6.000</span>
+          </div>
+          <p class="lamina-text text-muted" style="margin: 0; font-size: 0.85rem;">Pro + Atendente LÂMINA IA no WhatsApp + Assessor Preditivo Dashboard + Integração Oficial WABA (WhatsApp API).</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Separador Design System -->
+    <div style="height: 1px; background: linear-gradient(90deg, transparent, var(--accent-gold), transparent); margin: 6rem 0 4rem; opacity: 0.5;"></div>
+
+    <!-- 12. Design System: Cores -->
+    <section id="cores" class="ds-section" style="border:none; padding-top: 0;">
+      <div class="section-header">
+        <div class="section-kicker">12 // Design System Visual</div>
+        <h2 class="section-title">Paleta Obsidian Steel</h2>
+        <p class="section-desc">Uma paleta que transmite precisão e sofisticação. O Aquamarine comunica tecnologia cirúrgica. O Gold traz o toque premium do universo barbershop clássico. Juntos, criam uma identidade inconfundível para o painel web.</p>
+      </div>
+
+      <div class="color-grid">
+        <div class="color-card">
+          <div class="color-swatch" style="background: var(--bg-void);"><span class="color-swatch-label">bg-void</span></div>
+          <div class="color-info">
+            <div class="color-name">Deep Steel Void</div><div class="color-hex">#07080A</div>
+            <div class="color-role">Fundo absoluto. O vazio tecnológico onde tudo começa.</div>
+          </div>
+        </div>
+        <div class="color-card">
+          <div class="color-swatch" style="background: var(--bg-surface);"><span class="color-swatch-label">bg-surface</span></div>
+          <div class="color-info">
+            <div class="color-name">Carbon Surface</div><div class="color-hex">#111318</div>
+            <div class="color-role">Cards, painéis e áreas de conteúdo principal.</div>
+          </div>
+        </div>
+        <div class="color-card">
+          <div class="color-swatch" style="background: var(--bg-elevated);"><span class="color-swatch-label">bg-elevated</span></div>
+          <div class="color-info">
+            <div class="color-name">Elevated Steel</div><div class="color-hex">#1A1D24</div>
+            <div class="color-role">Elementos elevados: modais, dropdowns.</div>
+          </div>
+        </div>
+        <div class="color-card">
+          <div class="color-swatch" style="background: var(--accent-primary);"><span class="color-swatch-label" style="color: rgba(0,0,0,0.6);">accent-primary</span></div>
+          <div class="color-info">
+            <div class="color-name">Precision Aqua</div><div class="color-hex">#00D4AA</div>
+            <div class="color-role">A cor da inteligência. CTAs principais.</div>
+          </div>
+        </div>
+        <div class="color-card">
+          <div class="color-swatch" style="background: var(--accent-gold);"><span class="color-swatch-label" style="color: rgba(0,0,0,0.6);">accent-gold</span></div>
+          <div class="color-info">
+            <div class="color-name">Refined Gold</div><div class="color-hex">#D4A853</div>
+            <div class="color-role">O toque premium. Planos exclusivos e destaques.</div>
+          </div>
+        </div>
+        <div class="color-card">
+          <div class="color-swatch" style="background: var(--accent-danger);"><span class="color-swatch-label" style="color: rgba(255,255,255,0.6);">accent-danger</span></div>
+          <div class="color-info">
+            <div class="color-name">Razor Red</div><div class="color-hex">#FF4757</div>
+            <div class="color-role">Alertas, erros e ações destrutivas (no-shows).</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 13. Design System: Tipografia -->
+    <section id="tipografia" class="ds-section">
+      <div class="section-header">
+        <div class="section-kicker">13 // Tipografia</div>
+        <h2 class="section-title">A Voz Afiada</h2>
+      </div>
+
+      <div class="typo-spec">
+        <div class="typo-row">
+          <div class="typo-label"><strong>Display</strong>Space Grotesk<br>Weights: 600, 700</div>
+          <div><h1 class="font-display" style="font-size: 2.8rem; font-weight: 700; color: var(--text-pure); margin:0;">Tecnologia dedicada.</h1></div>
+        </div>
+        <div class="typo-row">
+          <div class="typo-label"><strong>Body</strong>Inter<br>Weights: 400, 500, 600</div>
+          <div><p class="font-body" style="font-size: 1rem; color: var(--text-main); margin:0; line-height: 1.6;">A plataforma que transforma a operação da sua barbearia com inteligência artificial que agenda e atende enquanto você foca no corte.</p></div>
+        </div>
+        <div class="typo-row" style="border:none; padding-bottom: 0;">
+          <div class="typo-label"><strong>Mono</strong>JetBrains Mono<br>Weights: 400, 700</div>
+          <div><div style="font-family: var(--font-mono); font-size: 0.85rem; color: var(--accent-primary); line-height: 1.8;">⟋ STATUS: OPERACIONAL<br>⟋ AGENDA: 47 HORÁRIOS CONFIRMADOS<br><span style="color: var(--accent-gold);">⟋ NO-SHOWS: 2 (↓ 94%)</span></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 14. Botões -->
+    <section id="botoes" class="ds-section">
+      <div class="section-header">
+        <div class="section-kicker">14 // Interações Básicas</div>
+        <h2 class="section-title">Botões e Ações</h2>
+      </div>
+      <div class="component-board">
+        <div class="btn-showcase">
+          <button class="lamina-btn lamina-btn-primary">Contratar Agora</button>
+          <button class="lamina-btn lamina-btn-gold">Plano Premium</button>
+          <button class="lamina-btn lamina-btn-secondary">Ver Demo</button>
+          <button class="lamina-btn lamina-btn-ghost">Saiba Mais</button>
+        </div>
+        <div class="btn-showcase" style="margin-bottom: 0;">
+          <button class="lamina-btn lamina-btn-primary lamina-btn-sm">Pequeno</button>
+          <button class="lamina-btn lamina-btn-primary">Padrão</button>
+          <button class="lamina-btn lamina-btn-primary lamina-btn-lg">Grande</button>
+          <button class="lamina-btn lamina-btn-primary" disabled>Desabilitado</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 15. Cards -->
+    <section id="cards" class="ds-section">
+      <div class="section-header">
+        <div class="section-kicker">15 // Superfícies</div>
+        <h2 class="section-title">Cards e Containments</h2>
+      </div>
+      <div class="card-showcase-grid">
+        <div class="lamina-card lamina-card-primary">
+          <div class="lamina-badge lamina-badge-primary" style="margin-bottom: 0.75rem;">Essencial</div>
+          <h4 class="lamina-h4" style="font-size:1.1rem;">App com sua marca</h4>
+          <p class="text-muted" style="margin-top: 0.5rem; font-size: 0.85rem; line-height: 1.5;">Aplicativo nativo iOS/Android customizado.</p>
+        </div>
+        <div class="lamina-card lamina-card-gold">
+          <div class="lamina-badge lamina-badge-gold" style="margin-bottom: 0.75rem;">Premium</div>
+          <h4 class="lamina-h4" style="font-size:1.1rem;">Assessor Digital IA</h4>
+          <p class="text-muted" style="margin-top: 0.5rem; font-size: 0.85rem; line-height: 1.5;">Inteligência no WhatsApp para escalar agendamentos.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 16. Badges & Tags -->
+    <section id="badges" class="ds-section">
+      <div class="section-header">
+        <div class="section-kicker">16 // Classificações</div>
+        <h2 class="section-title">Badges & Tags</h2>
+      </div>
+      <div class="component-board">
+        <div class="badge-showcase">
+          <span class="lamina-badge lamina-badge-primary">Confirmado</span>
+          <span class="lamina-badge lamina-badge-gold">VIP / Assinante</span>
+          <span class="lamina-badge lamina-badge-danger">No-Show</span>
+          <span class="lamina-badge lamina-badge-neutral">Pendente</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 17. Inputs -->
+    <section id="inputs" class="ds-section">
+      <div class="section-header">
+        <div class="section-kicker">17 // Formulários</div>
+        <h2 class="section-title">Inputs de Dados</h2>
+      </div>
+      <div class="component-board">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+          <div class="input-showcase">
+            <div><label class="input-label">Nome da Barbearia</label><input type="text" class="lamina-input" placeholder="Ex: Alces" style="margin-top: 0.5rem;"></div>
+            <div><label class="input-label">E-mail</label><input type="email" class="lamina-input lamina-input-error" value="erro@mail" style="margin-top: 0.5rem;"></div>
+          </div>
+          <div class="input-showcase">
+            <div><label class="input-label">WhatsApp</label><input type="tel" class="lamina-input" placeholder="(11) 99999-9999" style="margin-top: 0.5rem;"></div>
+            <div><label class="input-label">Desabilitado</label><input type="text" class="lamina-input" value="Bloqueado" disabled style="margin-top: 0.5rem;"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 18. Símbolos -->
+    <section id="simbolos" class="ds-section">
+      <div class="section-header">
+        <div class="section-kicker">18 // Semântica Visual</div>
+        <h2 class="section-title">Identidade Simbólica e Tom de Voz</h2>
+      </div>
+      <div class="component-board" style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: center;">
+        <div>
+          <p class="lamina-text text-muted"><strong>Direto e confiante.</strong> Sem marketing genérico.<br><br>
+          <strong style="color: var(--accent-primary);">✓ Certo:</strong> "Seu app na App Store em 7 dias."<br>
+          <strong style="color: var(--accent-danger);">✕ Errado:</strong> "Oferecemos soluções inovadoras."</p>
+        </div>
+        <div class="symbols-grid">
+          <div class="symbol-card">⟋ <span>Blade / Marca</span></div>
+          <div class="symbol-card">◆ <span>Node / Conexão</span></div>
+          <div class="symbol-card">→ <span>Flow / Próximo</span></div>
+          <div class="symbol-card">// <span>Logic / Divisor</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 19. Chat UI -->
+    <section id="chat" class="ds-section" style="margin-bottom: 0;">
+      <div class="section-header">
+        <div class="section-kicker">19 // Experiência LLM</div>
+        <h2 class="section-title">Mockup Chat UI (LÂMINA IA)</h2>
+      </div>
+      <div class="component-board">
+        <div class="chat-demo">
+          <div class="chat-bubble chat-client"><strong>Cliente:</strong> Tem horário pra hoje às 15h? Quero barba e corte.</div>
+          <div class="chat-bubble chat-ai">Disponível! ✂️ Reservei 15h com o Lucas — Barba + Corte (R$ 75). Confirma?</div>
+          <div class="chat-bubble chat-client"><strong>Cliente:</strong> Confirma! Posso pagar PIX na hora?</div>
+          <div class="chat-bubble chat-ai">Confirmado! ✅ O pagamento pode ser feito na hora, sim. Até às 15h! 🪒</div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    // Interatividade básica da Sidebar
+    const sections = document.querySelectorAll('.ds-section');
+    const navLinks = document.querySelectorAll('.ds-nav .nav-link');
+
+    window.addEventListener('scroll', () => {
+      let current = '';
+      sections.forEach(section => {
+        const sectionTop = section.offsetTop;
+        const sectionHeight = section.clientHeight;
+        if (pageYOffset >= (sectionTop - 100)) {
+          current = section.getAttribute('id');
+        }
+      });
+
+      navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href').includes(current)) {
+          link.classList.add('active');
+        }
+      });
+    });
+  </script>
+
+</body>
 </html>
