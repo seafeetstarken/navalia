@@ -192,23 +192,63 @@
     }
     
     @media (max-width: 768px) {
-      .ds-main { padding: 5rem 1.5rem 3rem; }
-      .section-title { font-size: 1.8rem; }
-      .card-showcase-grid { grid-template-columns: 1fr; }
-      .symbols-grid { grid-template-columns: 1fr; }
-      .typo-row { grid-template-columns: 1fr; gap: 0.5rem; }
-      .component-board { padding: 1.5rem; }
-      .lamina-manifesto { padding: 1.5rem !important; }
+      body { overflow-x: hidden; }
+      .ds-main { padding: 4.75rem 1rem 3rem; }
+      .section-header { margin-bottom: 1.25rem; }
+      .section-kicker { font-size: 0.68rem; letter-spacing: 0.14em; }
+      .section-title { font-size: 1.55rem; line-height: 1.12; }
+      .section-desc { font-size: 0.98rem; line-height: 1.55; }
+      .lamina-text, ul.lamina-list { font-size: 0.92rem; line-height: 1.55; }
+      .lamina-manifesto { padding: 1.1rem !important; border-radius: 18px; }
+      .lamina-manifesto-quote { font-size: 1.45rem; line-height: 1.1; }
+      .lamina-card { padding: 1rem; }
+      .card-showcase-grid { grid-template-columns: 1fr !important; }
+      .symbols-grid { grid-template-columns: 1fr !important; }
+      .typo-row { grid-template-columns: 1fr !important; gap: 0.35rem; padding-bottom: 1rem; }
+      .typo-label { font-size: 0.72rem; line-height: 1.45; }
+      .component-board { padding: 1rem; grid-template-columns: 1fr !important; border-radius: 18px; }
       .input-showcase { max-width: 100%; }
-      .color-grid { grid-template-columns: 1fr 1fr; }
+      .color-grid { grid-template-columns: 1fr 1fr !important; gap: 0.75rem; }
+      .color-card { min-width: 0; }
+      .chat-demo { max-width: 100%; padding: 1rem; }
+      .chat-bubble { max-width: 100%; }
+      [style*="grid-template-columns"] { grid-template-columns: 1fr !important; }
+      .lamina-table-dense { display: block; width: 100%; }
+      .lamina-table-dense thead { display: none; }
+      .lamina-table-dense tbody,
+      .lamina-table-dense tr,
+      .lamina-table-dense td { display: block; width: 100%; }
+      .lamina-table-dense tr {
+        padding: 0.85rem 0;
+        border-bottom: 1px solid var(--border-thin);
+      }
+      .lamina-table-dense td {
+        border: none;
+        padding: 0.2rem 0;
+        white-space: normal;
+      }
+      .lamina-table-dense td:first-child {
+        color: var(--accent-primary);
+        font-family: var(--font-display);
+        font-weight: 700;
+      }
     }
     
     @media (max-width: 480px) {
-      .section-title { font-size: 1.5rem; }
-      .color-grid { grid-template-columns: 1fr; }
+      .ds-main { padding-inline: 0.85rem; }
+      .mobile-menu-btn { top: 0.85rem; right: 0.85rem; width: 42px; height: 42px; }
+      .section-title { font-size: 1.35rem; }
+      .section-desc { font-size: 0.94rem; }
+      .card-showcase-grid,
+      .color-grid { grid-template-columns: 1fr !important; }
+      .color-grid { gap: 0.65rem; }
+      .lamina-card { padding: 0.9rem; }
+      .lamina-btn { width: 100%; justify-content: center; }
       .btn-showcase { flex-direction: column; align-items: stretch; }
       .btn-showcase button { width: 100%; margin-bottom: 0.5rem; }
       .badge-showcase { flex-direction: column; align-items: flex-start; }
+      .component-board { padding: 0.9rem; }
+      .lamina-manifesto-quote { font-size: 1.25rem; }
     }
   </style>
 </head>
@@ -824,3 +864,4 @@
 
 </body>
 </html>
+
